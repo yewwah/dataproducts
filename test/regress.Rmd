@@ -1,0 +1,60 @@
+#Regression Models
+
+##Loading the data
+
+x<- mtcars
+
+##Exploring the data
+head(x)
+
+For automatic the mpg would be 
+```{r}
+x<- mtcars
+
+mean(x[x$am==0,1])
+```
+
+For manual the mpg would be 
+```{r}
+mean(x[x$am==1,1])
+```
+
+Hence, the mean of mpg is greater for manual (at 24.392) than automatic (at 17.147).
+
+We investigate further to quantify the MPG difference between automatic and manual transmissions.
+boxplot(mpg ~ am, data = mtcars, xlab = "Transmission", ylab = "Miles per gallon", main="Miles per gallon by Transmission Type")
+
+```{r}
+auto <- (x[x$am==0,1])
+```
+
+For manual the mpg would be 
+```{r}
+manual<- (x[x$am==1,1])
+```
+
+```{r}
+t.test(auto,manual)
+```
+From the above, we may conclude that automatic run at 17.15mpg, while manual have 7.24 more mpg.
+
+Also, R^2 is 0.36, hence the model only accounts for 36% variance.
+
+Therefore we perform multivariate linear regression:
+
+```{r}
+model <- lm(mpg~am, data = mtcars)
+model1 <- lm(mpg~., data = mtcars)
+model2 <- lm(mpg~am + wt + hp + disp + qsec, data = mtcars)
+```
+
+The adjusted R-squared adds a penalty for adding variables to the model that are uncorrelated with the variable your trying to explain. The variables were tweaked many times with the addition and removal of certain variables and the best model was selected. Due to space issue, i only showed the best model and the model with all the variables. 
+
+```{r}
+anova(model, model1, model2)
+```
+
+#Appendix
+```{r}
+plot(model1)
+```
